@@ -6,7 +6,7 @@ import (
 
 func NewFiber() *fiber.App {
 	var app = fiber.New(fiber.Config{
-		AppName:      GetEnv("APP_NAME", "BRI-EDC-API"),
+		AppName:      GetEnv("APP_NAME", "SV-BE"),
 		ErrorHandler: NewErrorHandler(),
 		Prefork:      GetEnv("APP_PREFORK", "false") == "true",
 	})
