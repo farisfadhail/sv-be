@@ -18,7 +18,7 @@ func main() {
 
 	routes.SetupRouter(app, ct)
 
-	port := config.GetEnv("PORT", "")
+	port := config.GetEnv("PORT", "8080")
 	err = app.Listen(fmt.Sprintf(":%s", port))
 	if err != nil {
 		log.Fatalf("Failed to start server: %v", err.Error())
