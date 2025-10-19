@@ -14,11 +14,11 @@ import (
 func ConfigurationDB() (host, port, user, password, dbname string) {
 	LoadEnv()
 
-	host = GetEnv("DB_HOST", "localhost")
+	host = GetEnv("DB_HOST", "sv-db")
 	port = GetEnv("DB_PORT", "3306")
-	user = GetEnv("DB_USER", "faris")
+	user = GetEnv("DB_USER", "root")
 	password = GetEnv("DB_PASSWORD", "password")
-	dbname = GetEnv("DB_NAME", "bri-edc")
+	dbname = GetEnv("DB_NAME", "test-sv")
 
 	return
 }
