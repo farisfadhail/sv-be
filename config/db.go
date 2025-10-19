@@ -5,8 +5,9 @@ import (
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/mysql"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -26,12 +27,20 @@ func ConfigurationDB() (host, port, user, password, dbname string) {
 func ConnectGormDB() *gorm.DB {
 	host, port, user, password, dbname := ConfigurationDB()
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		user, password, host, port, dbname)
+	//dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+	//	user, password, host, port, dbname)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	//db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	//	Logger: logger.Default.LogMode(logger.Info),
+	//})
+
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		host, user, password, dbname, port)
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
+
 	if err != nil {
 		panic("failed to connect to database")
 	}
@@ -48,18 +57,35 @@ func ConnectGormDB() *gorm.DB {
 func ConnectMigrationDB() *migrate.Migrate {
 	host, port, user, password, dbname := ConfigurationDB()
 
-	dbURL := fmt.Sprintf(
-		"mysql://%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		user, password, host, port, dbname,
-	)
-
 	m, err := migrate.New(
 		"file://database/migrations",
-		dbURL,
+		fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+			user, password, host, port, dbname),
 	)
+
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to database migration: %v", err))
 	}
 
 	return m
 }
+
+//func ConnectMigrationDB() *migrate.Migrate {
+//	host, port, user, password, dbname := ConfigurationDB()
+//
+//	dbURL := fmt.Sprintf(
+//		"mysql://%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+//		user, password, host, port, dbname,
+//	)
+//
+//	m, err := migrate.New(
+//		"file://database/migrations",
+//		dbURL,
+//	)
+//	if err != nil {
+//		panic(fmt.Sprintf("failed to connect to database migration: %v", err))
+//	}
+//
+//	return m
+//}
+//
