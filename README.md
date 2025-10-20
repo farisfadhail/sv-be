@@ -1,10 +1,10 @@
-# 🧩 GoFiber Article API
+# GoFiber Article API
 
 A simple backend service built with **Golang 1.24.3**, **GoFiber**, **GORM**, **Wire**, and **Go-Migrate**, providing RESTful endpoints for managing articles.
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 - **Golang v1.24.3**
 - **Fiber v2** - HTTP framework
 - **GORM** - ORM for MySQL/PostgreSQL
@@ -14,7 +14,7 @@ A simple backend service built with **Golang 1.24.3**, **GoFiber**, **GORM**, **
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 ```bash
@@ -52,7 +52,7 @@ App will run at: **http://127.0.0.1:8080**
 
 ---
 
-## 🧱 Makefile Commands
+## Makefile Commands
 
 | Command | Description |
 |----------|-------------|
@@ -64,7 +64,7 @@ App will run at: **http://127.0.0.1:8080**
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Welcome Message
 ```http
@@ -114,7 +114,7 @@ DELETE http://127.0.0.1:8080/api/article/{id}
 
 ---
 
-## 🧪 Example Responses
+## Example Responses
 
 **GET /api/article**
 ```json
@@ -131,7 +131,7 @@ DELETE http://127.0.0.1:8080/api/article/{id}
 
 ---
 
-## 🧩 Project Structure
+## Project Structure
 
 ```
 .
