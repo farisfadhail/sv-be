@@ -19,8 +19,9 @@ func NewArticleHandler(s *services.ArticleService) *ArticleHandler {
 func (h *ArticleHandler) Index(c *fiber.Ctx) error {
 	limit := c.Query("limit", "10")
 	offset := c.Query("offset", "0")
+	status := c.Query("status", "")
 
-	articleResources, err := h.s.FindAll(limit, offset)
+	articleResources, err := h.s.FindAll(limit, offset, status)
 	if err != nil {
 		return err
 	}
@@ -29,7 +30,7 @@ func (h *ArticleHandler) Index(c *fiber.Ctx) error {
 }
 
 func (h *ArticleHandler) Create(c *fiber.Ctx) error {
-	req, err, code := utils.ValidateAndBind[validations.ArticleRequest](c)
+	req, err, code := utils.ValidateAndBind[validations.CreateArticleRequest](c)
 	if err != nil {
 		return c.Status(code).JSON(fiber.Map{
 			"message": err.Error(),
@@ -51,7 +52,7 @@ func (h *ArticleHandler) Create(c *fiber.Ctx) error {
 func (h *ArticleHandler) Update(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	req, err, code := utils.ValidateAndBind[validations.ArticleRequest](c)
+	req, err, code := utils.ValidateAndBind[validations.UpdateArticleRequest](c)
 	if err != nil {
 		return c.Status(code).JSON(fiber.Map{
 			"message": err.Error(),

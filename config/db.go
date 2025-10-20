@@ -15,11 +15,11 @@ import (
 func ConfigurationDB() (host, port, user, password, dbname string) {
 	LoadEnv()
 
-	host = GetEnv("DB_HOST", "9qasp5v56q8ckkf5dc.apn.leapcellpool.com")
-	port = GetEnv("DB_PORT", "6438")
-	user = GetEnv("DB_USER", "pjyamxsolnnlpluyucgd")
-	password = GetEnv("DB_PASSWORD", "jqjznzwvuetxmmnpvgjqjxxywobviw")
-	dbname = GetEnv("DB_NAME", "ztjlyopaltwrherbayug")
+	host = GetEnv("DB_HOST", "")
+	port = GetEnv("DB_PORT", "")
+	user = GetEnv("DB_USER", "")
+	password = GetEnv("DB_PASSWORD", "")
+	dbname = GetEnv("DB_NAME", "")
 
 	return
 }
@@ -70,6 +70,7 @@ func ConnectMigrationDB() *migrate.Migrate {
 	return m
 }
 
+// MySQL Migration
 //func ConnectMigrationDB() *migrate.Migrate {
 //	host, port, user, password, dbname := ConfigurationDB()
 //

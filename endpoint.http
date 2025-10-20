@@ -1,0 +1,43 @@
+# Welcome Message
+GET http://127.0.0.1:8080
+
+###
+
+# Get Index Articles
+GET http://127.0.0.1:8080/api/article
+
+###
+
+# Create a New Article
+POST http://127.0.0.1:8080/api/article
+Content-Type: application/json
+
+{
+  "title": "Pengenalan Web 3.0 dan Blockchain PUBLISH",
+  "content": "Web 3.0 merupakan evolusi dari internet yang menekankan pada desentralisasi, kepemilikan data, serta keterlibatan pengguna melalui teknologi blockchain. Artikel ini membahas bagaimana sistem blockchain dapat mendukung kepercayaan dan transparansi, terutama pada aplikasi seperti e-voting dan identitas digital.",
+  "category": "Teknologi",
+  "status": "publish"
+}
+
+###
+
+# Get Article by ID
+GET http://127.0.0.1:8080/api/article/2
+
+###
+
+# Update an Article
+PUT http://127.0.0.1:8080/api/article/2
+Content-Type: application/json
+
+{
+  "title": "Pengenalan Web 3.0 dan Blockchain (Update)",
+  "content": "Dalam pembaruan ini, artikel menjelaskan lebih detail mengenai integrasi Web 3.0 dengan teknologi blockchain yang memberikan keamanan dan transparansi tinggi. Implementasi ini juga membuka peluang baru dalam dunia digital, termasuk penerapan di sistem pemerintahan, keuangan, dan pendidikan.",
+  "category": "Teknologi",
+  "status": "thrash"
+}
+
+###
+
+# Delete an Article
+DELETE http://127.0.0.1:8080/api/article/1

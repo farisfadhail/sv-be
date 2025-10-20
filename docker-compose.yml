@@ -1,20 +1,21 @@
 services:
-  mysql:
-    image: mysql:8.0.43
-    container_name: sv_mysql
+  postgres:
+    image: postgres:16-alpine
+    container_name: sv_postgres
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: test-sv
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test-sv
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "3307:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data_v2:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - sv_network
-    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-ppassword"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d test-sv"]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -29,16 +30,17 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_USER: root
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
       DB_PASSWORD: password
       DB_NAME: test-sv
+      DB_SSLMODE: disable
 
       APP_ENV: local
       APP_PORT: 8080
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
     networks:
       - sv_network
@@ -50,5 +52,5 @@ networks:
     driver: bridge
 
 volumes:
-  mysql_data_v2:
+  postgres_data:
     driver: local

@@ -25,8 +25,10 @@ func NewArticleService(
 	}
 }
 
-func (s *ArticleService) FindAll(limit, offset string) ([]resources.ArticleResource, error) {
+func (s *ArticleService) FindAll(limit, offset, status string) ([]resources.ArticleResource, error) {
 	var articles []models.Article
+
+	query := s.db
 
 	lim, err := strconv.Atoi(limit)
 	if err != nil || lim <= 0 {
@@ -37,7 +39,11 @@ func (s *ArticleService) FindAll(limit, offset string) ([]resources.ArticleResou
 		off = 0
 	}
 
-	err = s.db.Limit(lim).Offset(off).Find(&articles).Error
+	if status != "" {
+		query = query.Where("status = ?", status)
+	}
+
+	err = query.Limit(lim).Offset(off).Find(&articles).Error
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +57,7 @@ func (s *ArticleService) FindAll(limit, offset string) ([]resources.ArticleResou
 	return articleResources, nil
 }
 
-func (s *ArticleService) Create(req validations.ArticleRequest) error {
+func (s *ArticleService) Create(req validations.CreateArticleRequest) error {
 	article := models.Article{
 		Title:    req.Title,
 		Content:  req.Content,
@@ -62,16 +68,27 @@ func (s *ArticleService) Create(req validations.ArticleRequest) error {
 	return s.articleRepo.Create(s.db, article)
 }
 
-func (s *ArticleService) Update(id string, req validations.ArticleRequest) error {
+func (s *ArticleService) Update(id string, req validations.UpdateArticleRequest) error {
 	article, err := s.articleRepo.GetByID(s.db, id)
 	if err != nil {
 		return err
 	}
 
-	article.Title = req.Title
-	article.Content = req.Content
-	article.Category = req.Category
-	article.Status = req.Status
+	if req.Title != "" {
+		article.Title = req.Title
+	}
+
+	if req.Content != "" {
+		article.Content = req.Content
+	}
+
+	if req.Category != "" {
+		article.Category = req.Category
+	}
+
+	if req.Status != "" {
+		article.Status = req.Status
+	}
 
 	return s.articleRepo.Update(s.db, article)
 }
